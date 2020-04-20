@@ -6,7 +6,7 @@ using UnityEngine.Networking.NetworkSystem;
 using UnityEngine.UI;
 public class NetworkClientUI : MonoBehaviour {
 	NetworkClient client;
-	public Text text,text1;
+	public Text text, text1;
 	void OnGUI()
 	{
 		string ipaddress = Network.player.ipAddress;
@@ -23,26 +23,21 @@ public class NetworkClientUI : MonoBehaviour {
 	void Start () {
 		client = new NetworkClient();
 		Input.gyro.enabled = true;
+		
 	}
 	void connect()
 	{
-		client.Connect("192.168.43.139", 25000);
+		client.Connect("192.168.43.212", 25000);
 	}
 	
 	void Update () {
-
 		var temp1 = DeviceRotation.Get();
-		//var temp1 = Input.gyro.attitude;
 		var temp = temp1.eulerAngles;
-		text.text = temp.normalized.ToString();
-		text1.text = temp.ToString();
-		var pos = Input.acceleration;
 		if (client.isConnected)
-		{
-			StringMessage msg = new StringMessage();
-			msg.value = temp.x + "|" + temp.y + "|" + temp.z + "|" + pos.x + "|" + pos.y + "|" + pos.z; ;
-			//msg.value = temp.x + "|" + temp.y + "|" + temp.z + "|"+temp.w + "|" + pos.x + "|" + pos.y + "|" + pos.z;
-			client.Send(888, msg);
-		}
+			{
+				StringMessage msg = new StringMessage();
+				msg.value = temp.x + "|" + temp.y + "|" + temp.z ;
+				client.Send(888, msg);
+			}
 	}
 }
